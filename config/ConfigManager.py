@@ -14,8 +14,11 @@ class ConfigManager:
     TEST_CONFIG_PATH = os.path.join(CONFIG_PATH, 'test_config.yaml')
 
     @staticmethod
-    def read_file(path) -> []:
+    def read_file(path: str) -> []:
         try:
+            if path == "":
+                logging.error("Error: Path is an empty str")
+                return
             file_stream = io.open(path, "r", encoding="utf-8")
             output = yaml.safe_load(file_stream)
             file_stream.close()
@@ -26,8 +29,11 @@ class ConfigManager:
             logging.error("Error at safe load the Yaml-File\nError: {0}".format(ex))
 
     @staticmethod
-    def write_file(data, path) -> None:
+    def write_file(data: str, path: str) -> None:
         try:
+            if path == "":
+                logging.error("Error: Path is an empty str")
+                return
             file_stream = io.open(path, "w", encoding="utf-8")
             yaml.safe_dump(data, file_stream)
             file_stream.flush()
@@ -42,7 +48,7 @@ class ConfigManager:
         return ConfigManager.read_file(ConfigManager.VLAN_CONFIG_PATH)
 
     @staticmethod
-    def get_vlan_list(vlan_count=0) -> []:
+    def get_vlan_list(vlan_count: int=0) -> []:
         output = ConfigManager.get_vlan_config()
 
         if not len(output) == 7:
